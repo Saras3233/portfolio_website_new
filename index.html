@@ -6,449 +6,576 @@
 <title>Saraschandra Mavallapalli | Executive Data Leadership</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* PREMIUM TONAL PALETTE & RESET */
+  /* --- PREMIUM DARK THEME & RESET --- */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   
   :root {
-    --bg-primary: #F9F8F6; /* Soft Beige */
-    --bg-secondary: #F0EBE6; /* Light Taupe */
-    --text-dark: #2C2A29; /* Deep Charcoal/Taupe */
-    --text-muted: #66615E; /* Medium Taupe */
-    --accent-main: #8A7A6F; /* Rich Taupe */
-    --accent-light: #DFCDCA; /* Subtle Light Pink/Rose */
-    --white: #FFFFFF;
-    --border-subtle: rgba(138, 122, 111, 0.2);
+    --bg-base: #070709;
+    --bg-surface: rgba(255, 255, 255, 0.03);
+    --bg-surface-hover: rgba(255, 255, 255, 0.06);
+    --text-main: #FFFFFF;
+    --text-muted: #A0A0AB;
+    --accent-gold: #D4AF37;
+    --accent-glow: rgba(212, 175, 55, 0.4);
+    --accent-blue: #2E8BC0;
+    --border-glass: rgba(255, 255, 255, 0.08);
     
     --font-heading: 'Cormorant Garamond', serif;
-    --font-body: 'Inter', sans-serif;
+    --font-body: 'Outfit', sans-serif;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: var(--bg-base); }
   
   body {
     font-family: var(--font-body);
-    background: var(--bg-primary);
-    color: var(--text-dark);
+    background-color: var(--bg-base);
+    color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    position: relative;
   }
 
-  /* ANIMATIONS */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
+  /* --- AMBIENT BACKGROUND GLOWS --- */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    opacity: 0.5;
+    animation: float 20s infinite alternate ease-in-out;
+  }
+  .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--accent-glow); }
+  .orb-2 { top: 40%; right: -20%; width: 60vw; height: 60vw; background: rgba(46, 139, 192, 0.15); animation-delay: -5s; }
+  .orb-3 { bottom: -10%; left: 20%; width: 40vw; height: 40vw; background: var(--accent-glow); opacity: 0.3; }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(5%, 10%) scale(1.1); }
+  }
+
+  /* --- SCROLL REVEAL ANIMATIONS --- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  /* INITIAL LOAD ANIMATIONS */
+  @keyframes fadeUpIn {
+    from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  .animate-up { animation: fadeUpIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+  .anim-delay-1 { animation-delay: 0.2s; }
+  .anim-delay-2 { animation-delay: 0.4s; }
 
-  .animate-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    opacity: 0;
-  }
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-
-  /* NAVIGATION */
+  /* --- NAVIGATION --- */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 1.5rem 5%;
     display: flex; align-items: center; justify-content: space-between;
-    background: rgba(249, 248, 246, 0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(7, 7, 9, 0.5);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s ease;
   }
+  nav.scrolled { padding: 1rem 5%; border-bottom: 1px solid var(--border-glass); background: rgba(7, 7, 9, 0.85); }
   
   .nav-logo {
-    font-family: var(--font-heading);
-    font-size: 1.4rem; font-weight: 500; letter-spacing: 0.05em;
-    color: var(--text-dark);
+    font-family: var(--font-heading); font-size: 1.6rem; font-weight: 600;
+    background: linear-gradient(to right, #FFF, var(--accent-gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   
   .nav-links { display: flex; gap: 3rem; list-style: none; }
   .nav-links a {
-    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: var(--text-muted); text-decoration: none; transition: color 0.3s ease;
     font-weight: 500;
   }
-  .nav-links a:hover { color: var(--accent-main); }
+  .nav-links a:hover { color: var(--accent-gold); }
 
-  /* HERO SECTION */
+  /* --- BUTTONS --- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 1rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.15em;
+    text-transform: uppercase; text-decoration: none; font-weight: 600;
+    border-radius: 4px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary {
+    background: var(--text-main); color: var(--bg-base);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  .btn-primary:hover {
+    background: var(--accent-gold); box-shadow: 0 0 30px var(--accent-glow);
+    transform: translateY(-3px);
+  }
+  .btn-outline {
+    background: transparent; color: var(--text-main);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(10px);
+  }
+  .btn-outline:hover {
+    border-color: var(--accent-gold); color: var(--accent-gold);
+    background: rgba(212, 175, 55, 0.05); transform: translateY(-3px);
+  }
+
+  /* --- HERO SECTION --- */
   .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 8rem 5% 4rem;
-    gap: 4rem;
+    min-height: 100vh; display: grid; grid-template-columns: 1.1fr 0.9fr;
+    align-items: center; padding: 8rem 5% 4rem; gap: 4rem; position: relative;
   }
-  
   .hero-eyebrow {
-    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
-    font-weight: 600;
+    font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
   }
-  .hero-eyebrow::before {
-    content: ''; display: block; width: 50px; height: 1px; background: var(--accent-main);
-  }
+  .hero-eyebrow::before { content: ''; display: block; width: 60px; height: 1px; background: var(--accent-gold); }
   
   .hero h1 {
-    font-family: var(--font-heading);
-    font-size: clamp(3.5rem, 6vw, 5.5rem);
-    font-weight: 400; line-height: 1.05;
-    color: var(--text-dark); margin-bottom: 1rem;
+    font-family: var(--font-heading); font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 400; line-height: 1.1; margin-bottom: 1.5rem;
   }
-  .hero h1 .italic { font-style: italic; color: var(--accent-main); }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, var(--accent-gold), #FFF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
   
   .hero-title {
-    font-size: 1.1rem; font-weight: 300;
-    color: var(--text-muted); margin-bottom: 2rem;
-    padding-left: 1rem; border-left: 2px solid var(--accent-light);
+    font-size: 1.2rem; font-weight: 300; color: var(--text-main); margin-bottom: 2rem;
+    padding-left: 1.2rem; border-left: 2px solid var(--accent-gold);
   }
-  
   .hero-summary {
-    font-size: 1.05rem; color: var(--text-muted); line-height: 1.8;
-    max-width: 520px; margin-bottom: 3rem; font-weight: 300;
+    font-size: 1.1rem; color: var(--text-muted); line-height: 1.8;
+    max-width: 540px; margin-bottom: 3rem; font-weight: 300;
   }
-  
   .hero-ctas { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  
-  .btn-primary {
-    padding: 1rem 2.5rem; background: var(--text-dark);
-    color: var(--bg-primary); font-size: 0.8rem; letter-spacing: 0.15em;
-    text-transform: uppercase; text-decoration: none; font-weight: 500;
-    transition: all 0.3s ease; border: 1px solid var(--text-dark);
-  }
-  .btn-primary:hover { background: var(--accent-main); border-color: var(--accent-main); }
-  
-  .btn-outline {
-    padding: 1rem 2.5rem; border: 1px solid var(--border-subtle);
-    color: var(--text-dark); font-size: 0.8rem; letter-spacing: 0.15em;
-    text-transform: uppercase; text-decoration: none; font-weight: 500;
-    transition: all 0.3s ease;
-  }
-  .btn-outline:hover { background: var(--accent-light); border-color: var(--accent-light); }
 
-  /* HERO VISUAL (Editorial Style) */
+  /* --- HERO VISUAL (GLASSMORPHISM) --- */
   .hero-visual { position: relative; display: flex; justify-content: center; }
   .photo-frame {
     position: relative; width: 420px; height: 520px;
-    background: var(--bg-secondary);
-    padding: 1rem;
+    border-radius: 12px; overflow: visible;
+    z-index: 1;
+  }
+  .photo-frame::before {
+    content: ''; position: absolute; inset: -2px;
+    background: linear-gradient(135deg, var(--accent-gold), transparent, var(--border-glass));
+    border-radius: 14px; z-index: -1; transition: opacity 0.4s;
   }
   .photo-frame img {
-    width: 100%; height: 100%; object-fit: cover;
-    filter: contrast(1.05) saturate(1.1);
+    width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+    filter: contrast(1.05) saturate(1.1) brightness(0.9);
   }
+  
   .executive-badge {
-    position: absolute; bottom: -30px; left: -30px;
-    background: var(--white); padding: 1.5rem 2rem;
-    box-shadow: 0 20px 40px rgba(44, 42, 41, 0.08);
+    position: absolute; bottom: -20px; left: -40px;
+    background: rgba(20, 20, 25, 0.7); backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass); border-radius: 8px;
+    padding: 1.5rem 2.5rem; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    animation: float 6s infinite ease-in-out;
   }
-  .badge-num {
-    font-family: var(--font-heading); font-size: 3rem; line-height: 1; color: var(--accent-main);
-  }
-  .badge-text {
-    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.5rem;
-  }
+  .badge-num { font-family: var(--font-heading); font-size: 3.5rem; line-height: 1; color: var(--accent-gold); }
+  .badge-text { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.5rem; }
 
-  /* SECTION COMMON */
-  section { padding: 8rem 5%; }
+  /* --- SECTION COMMON --- */
+  section { padding: 8rem 5%; position: relative; z-index: 2; }
   .section-label {
-    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-main); margin-bottom: 1rem; font-weight: 600;
+    font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: 1rem; font-weight: 600;
+    display: inline-block; padding: 0.4rem 1rem; border: 1px solid var(--accent-gold); border-radius: 20px;
   }
   .section-title {
-    font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 400;
-    color: var(--text-dark); margin-bottom: 4rem; line-height: 1.1;
+    font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 400; color: var(--text-main); margin-bottom: 4rem; line-height: 1.1;
   }
 
-  /* IMPACT METRICS */
-  .metrics-section { background: var(--bg-secondary); }
-  .metrics-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
-  }
+  /* --- IMPACT METRICS (GLASS CARDS) --- */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
   .metric-card {
-    background: var(--white); padding: 3rem 2rem;
-    border-top: 4px solid var(--accent-light);
-    transition: transform 0.3s ease;
+    background: var(--bg-surface); backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass); border-radius: 12px;
+    padding: 3rem 2rem; transition: all 0.4s ease;
+    position: relative; overflow: hidden;
   }
-  .metric-card:hover { transform: translateY(-5px); }
-  .metric-num {
-    font-family: var(--font-heading); font-size: 3.5rem; color: var(--text-dark);
-    line-height: 1; margin-bottom: 1rem;
+  .metric-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), transparent);
+    opacity: 0; transition: opacity 0.4s ease;
   }
-  .metric-label { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+  .metric-card:hover { 
+    transform: translateY(-10px); background: var(--bg-surface-hover);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.15);
+  }
+  .metric-card:hover::before { opacity: 1; }
+  .metric-num { font-family: var(--font-heading); font-size: 4rem; color: var(--text-main); line-height: 1; margin-bottom: 1rem; }
+  .metric-label { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-  /* LEADERSHIP & EXPERTISE */
-  .expertise-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-  }
+  /* --- EXPERTISE --- */
+  .expertise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
   .expertise-card {
-    padding: 2.5rem 0; border-top: 1px solid var(--border-subtle);
+    padding: 3rem 2.5rem; background: var(--bg-surface); backdrop-filter: blur(10px);
+    border: 1px solid var(--border-glass); border-radius: 12px;
+    transition: all 0.4s ease;
+  }
+  .expertise-card:hover { 
+    transform: translateY(-8px); background: rgba(255,255,255,0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border-color: var(--accent-gold);
   }
   .expertise-card h3 {
-    font-family: var(--font-heading); font-size: 1.6rem; font-weight: 500;
-    color: var(--text-dark); margin-bottom: 1rem;
-  }
-  .expertise-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
-
-  /* EXPERIENCE TIMELINE */
-  .experience-section { background: var(--white); }
-  .timeline-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; }
-  .timeline { position: relative; padding-left: 2rem; border-left: 1px solid var(--border-subtle); }
-  .timeline-item { margin-bottom: 4rem; position: relative; }
-  .timeline-dot {
-    position: absolute; left: -37px; top: 5px; width: 10px; height: 10px;
-    background: var(--accent-main); border-radius: 50%;
-    box-shadow: 0 0 0 8px var(--white);
-  }
-  .timeline-period {
-    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent-main); margin-bottom: 0.5rem; font-weight: 600;
-  }
-  .timeline-role {
     font-family: var(--font-heading); font-size: 1.8rem; font-weight: 500;
-    color: var(--text-dark); margin-bottom: 0.2rem;
+    color: var(--text-main); margin-bottom: 1.2rem;
   }
-  .timeline-company {
-    font-size: 0.9rem; color: var(--text-muted); font-weight: 500; margin-bottom: 1.5rem;
-  }
-  .timeline-highlights { list-style: none; }
-  .timeline-highlights li {
-    font-size: 0.95rem; color: var(--text-muted); line-height: 1.7;
-    margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; font-weight: 300;
-  }
-  .timeline-highlights li::before {
-    content: '→'; position: absolute; left: 0; color: var(--accent-light); font-weight: bold;
+  .expertise-card p { font-size: 1rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+
+  /* --- SCANNABLE CAREER ROADMAP (UNIFIED VERTICAL) --- */
+  .experience-section { position: relative; }
+  .roadmap-container { position: relative; max-width: 900px; margin: 0 auto; padding-top: 2rem; }
+  
+  /* Left glowing line */
+  .roadmap-container::after {
+    content: ''; position: absolute; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--accent-gold), var(--accent-blue), transparent);
+    top: 0; bottom: 0; left: 40px;
+    box-shadow: 0 0 15px var(--accent-glow);
   }
 
-  /* SKILLS & ARCHITECTURE */
-  .skills-section { background: var(--bg-secondary); }
-  .skills-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
-  .skill-group-label {
+  .roadmap-item { position: relative; padding-left: 100px; padding-bottom: 3.5rem; }
+  .roadmap-item:last-child { padding-bottom: 0; }
+
+  /* Glowing Dots */
+  .roadmap-item::before {
+    content: ''; position: absolute; width: 20px; height: 20px;
+    left: 31px; top: 0; background-color: var(--bg-base);
+    border: 3px solid var(--accent-gold); border-radius: 50%;
+    z-index: 1; transition: all 0.4s ease;
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .roadmap-item:hover::before { background-color: var(--accent-gold); transform: scale(1.4); box-shadow: 0 0 20px var(--accent-gold); }
+
+  /* Content Cards */
+  .roadmap-content {
+    padding: 2.5rem; background: var(--bg-surface); backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass); border-radius: 12px;
+    transition: all 0.4s ease; text-align: left;
+  }
+  .roadmap-item:hover .roadmap-content {
+    transform: translateY(-5px); border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  }
+
+  /* Scannable Header */
+  .roadmap-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+  }
+
+  .roadmap-period {
     font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--text-dark); margin-bottom: 1.5rem; font-weight: 600;
+    color: var(--bg-base); background: var(--accent-gold);
+    padding: 0.5rem 1.2rem; border-radius: 30px; font-weight: 700;
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
   }
-  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 3rem; }
+  .roadmap-role { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.2rem; }
+  .roadmap-company { font-size: 1.1rem; color: var(--accent-blue); font-weight: 400; letter-spacing: 0.05em;}
+  
+  /* Internal Progression Track */
+  .progression-track {
+    margin: 1.5rem 0 2rem; padding-left: 1.2rem;
+    border-left: 2px solid rgba(212, 175, 55, 0.3);
+  }
+  .progression-item { position: relative; margin-bottom: 1rem; }
+  .progression-item:last-child { margin-bottom: 0; }
+  .progression-item::before {
+    content: ''; position: absolute; left: -1.5rem; top: 0.5rem;
+    width: 8px; height: 8px; background: var(--accent-gold);
+    border-radius: 50%; box-shadow: 0 0 8px var(--accent-glow);
+  }
+  .progression-role { display: block; font-weight: 500; color: var(--text-main); font-size: 1.05rem; }
+  .progression-date { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.05em; font-weight: 300;}
+
+  .roadmap-highlights { list-style: none; }
+  .roadmap-highlights li {
+    font-size: 1.05rem; color: var(--text-muted); line-height: 1.6;
+    margin-bottom: 0.8rem; padding-left: 1.8rem; position: relative; font-weight: 300;
+  }
+  .roadmap-highlights li::before {
+    content: '✦'; position: absolute; left: 0; color: var(--accent-gold); font-size: 0.8rem; top: 2px;
+  }
+  .roadmap-highlights li strong { color: var(--text-main); font-weight: 500; }
+
+  /* --- SKILLS CHIPS --- */
+  .skills-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+  .skill-group-label { font-size: 0.9rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-main); margin-bottom: 1.5rem; font-weight: 600; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3.5rem; }
   .skill-tag {
-    font-size: 0.85rem; padding: 0.6rem 1.2rem; background: var(--white);
-    border: 1px solid var(--border-subtle); color: var(--text-muted);
-    transition: all 0.2s ease;
+    font-size: 0.9rem; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-glass); border-radius: 30px; color: var(--text-muted);
+    transition: all 0.3s ease; backdrop-filter: blur(5px); cursor: default;
   }
-  .skill-tag:hover { background: var(--accent-light); color: var(--text-dark); border-color: var(--accent-light); }
+  .skill-tag:hover { 
+    background: var(--accent-gold); color: var(--bg-base); font-weight: 600;
+    border-color: var(--accent-gold); transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px var(--accent-glow);
+  }
 
-  /* CONTACT */
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+  /* --- CONTACT --- */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
   .contact-tagline {
-    font-family: var(--font-heading); font-size: 2.5rem; font-weight: 400; font-style: italic;
-    color: var(--text-dark); line-height: 1.3; margin-bottom: 2rem;
+    font-family: var(--font-heading); font-size: 3rem; font-weight: 400; font-style: italic;
+    color: var(--text-main); line-height: 1.2; margin-bottom: 2rem;
   }
-  .contact-info-item {
-    margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle);
-  }
-  .contact-info-label {
-    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent-main); margin-bottom: 0.5rem; font-weight: 600;
-  }
-  .contact-info-value { font-size: 1.1rem; color: var(--text-dark); font-weight: 400; }
-  .contact-info-value a { color: var(--text-dark); text-decoration: none; transition: color 0.2s; }
-  .contact-info-value a:hover { color: var(--accent-main); }
+  .contact-info-wrapper { background: var(--bg-surface); padding: 3rem; border-radius: 12px; border: 1px solid var(--border-glass); backdrop-filter: blur(10px); }
+  .contact-info-item { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-glass); transition: transform 0.3s ease; }
+  .contact-info-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .contact-info-item:hover { transform: translateX(10px); }
+  .contact-info-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 0.5rem; font-weight: 600; }
+  .contact-info-value { font-size: 1.2rem; color: var(--text-main); font-weight: 400; }
+  .contact-info-value a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
+  .contact-info-value a:hover { color: var(--accent-gold); }
 
-  /* FOOTER */
+  /* --- FOOTER --- */
   footer {
-    background: var(--text-dark); color: var(--bg-primary);
-    padding: 3rem 5%; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border-glass); padding: 3rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  .footer-name { font-family: var(--font-heading); font-size: 1.2rem; }
-  .footer-note { font-size: 0.8rem; color: rgba(249, 248, 246, 0.6); }
+  .footer-name { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text-main); }
+  .footer-note { font-size: 0.9rem; color: var(--text-muted); }
 
-  /* RESPONSIVE */
+  /* --- RESPONSIVE --- */
   @media (max-width: 1024px) {
-    .hero, .timeline-grid, .contact-grid { grid-template-columns: 1fr; gap: 4rem; }
-    .hero-visual { grid-row: 1; }
+    .hero, .contact-grid { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
+    .hero-eyebrow { justify-content: center; }
+    .hero-eyebrow::before { display: none; }
+    .hero-title { border-left: none; padding-left: 0; border-bottom: 2px solid var(--accent-gold); padding-bottom: 1rem; display: inline-block; }
+    .hero-summary { margin: 0 auto 3rem; }
+    .hero-ctas { justify-content: center; }
+    .hero-visual { grid-row: 1; margin-top: 4rem; }
     .metrics-grid { grid-template-columns: repeat(2, 1fr); }
     .expertise-grid { grid-template-columns: 1fr 1fr; }
   }
+  
   @media (max-width: 768px) {
     nav { padding: 1.5rem 5%; flex-direction: column; gap: 1.5rem; }
+    nav.scrolled { padding: 1rem 5%; }
+    .nav-logo { font-size: 1.4rem; }
     .nav-links { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .hero { padding-top: 12rem; }
+    .hero { padding-top: 13rem; }
     .photo-frame { width: 100%; height: auto; aspect-ratio: 4/5; }
+    .executive-badge { left: 10px; right: 10px; bottom: -20px; text-align: left; }
     .expertise-grid, .skills-columns { grid-template-columns: 1fr; }
     .metrics-grid { grid-template-columns: 1fr; }
+    
+    /* Scannable Roadmap Mobile Adjustments */
+    .roadmap-container::after { left: 20px; }
+    .roadmap-item { padding-left: 60px; }
+    .roadmap-item::before { left: 11px; }
+    .roadmap-header { flex-direction: column-reverse; gap: 0.5rem; }
+    .roadmap-role { font-size: 1.8rem; }
+    
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<nav>
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
+<div class="ambient-orb orb-3"></div>
+
+<nav id="navbar">
   <div class="nav-logo">Saraschandra Mavallapalli</div>
   <ul class="nav-links">
-    <li><a href="#impact">Business Impact</a></li>
-    <li><a href="#expertise">Leadership & Expertise</a></li>
-    <li><a href="#experience">Executive Journey</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#experience">Roadmap</a></li>
     <li><a href="#contact">Engage</a></li>
   </ul>
 </nav>
 
 <section class="hero">
   <div class="hero-text animate-up">
-    <div class="hero-eyebrow">Enterprise Data Leadership</div>
-    <h1>Driving <span class="italic">Transformation</span><br>Through Data.</h1>
-    <div class="hero-title">AVP – BI & Data Governance · Core Banking Analytics</div>
-    <p class="hero-summary">Bridging C-suite vision with highly scalable, compliant data architectures. Specializing in financial services data governance, automated regulatory reporting, and cultivating high-performing engineering teams.</p>
+    <div class="hero-eyebrow">Strategic Data & Analytics Executive</div>
+    <h1>Translating Complexity Into <span class="gradient-text">Enterprise Value.</span></h1>
+    <div class="hero-title">AVP – BI & Data Governance · Banking Analytics</div>
+    <p class="hero-summary">Bridging the gap between C-suite strategic vision and technical execution. Specializing in Target Operating Models (TOM) for data governance, democratizing self-service analytics, and architecting compliant data ecosystems in heavily regulated financial markets.</p>
     <div class="hero-ctas">
-      <a href="#contact" class="btn-primary">Connect with Me</a>
-      <a href="#impact" class="btn-outline">View Strategic Impact</a>
+      <a href="#contact" class="btn btn-primary">Connect with Me</a>
+      <a href="#impact" class="btn btn-outline">View Strategic Impact</a>
     </div>
   </div>
-  <div class="hero-visual animate-up delay-2">
+  <div class="hero-visual animate-up anim-delay-1">
     <div class="photo-frame">
       <img src="DSC07962 copy.jpg" alt="Saraschandra Mavallapalli">
       <div class="executive-badge">
         <div class="badge-num">9.5+</div>
-        <div class="badge-text">Years Leading<br>Data Strategy</div>
+        <div class="badge-text">Years Driving<br>Data Strategy</div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="metrics-section" id="impact">
-  <div class="section-label">Measurable Impact</div>
+  <div class="section-label reveal">Measurable Impact & ROI</div>
   <div class="metrics-grid">
-    <div class="metric-card">
+    <div class="metric-card reveal delay-1">
       <div class="metric-num">100+</div>
-      <div class="metric-label">Stakeholders empowered through data literacy & self-service analytics programs</div>
+      <div class="metric-label">Stakeholders empowered through robust data literacy and self-service analytics enablement</div>
     </div>
-    <div class="metric-card">
+    <div class="metric-card reveal delay-2">
       <div class="metric-num">50+</div>
-      <div class="metric-label">Regulatory datasets documented with enterprise data dictionaries & lineage</div>
+      <div class="metric-label">Regulatory datasets secured with comprehensive enterprise data dictionaries and mapped lineage</div>
     </div>
-    <div class="metric-card">
+    <div class="metric-card reveal delay-3">
       <div class="metric-num">40%</div>
-      <div class="metric-label">Reduction in reporting turnaround through enterprise automation initiatives</div>
+      <div class="metric-label">Reduction in reporting turnaround time through enterprise-wide workflow automation initiatives</div>
     </div>
-    <div class="metric-card">
+    <div class="metric-card reveal delay-4">
       <div class="metric-num">4</div>
-      <div class="metric-label">Blue-chip organisations transformed: Citco, D&B, Deloitte, & TCS</div>
+      <div class="metric-label">Blue-chip organisations digitally transformed: Citco, D&B, Deloitte, & TCS</div>
     </div>
   </div>
 </section>
 
-<section id="expertise" style="background: var(--white); padding: 8rem 5%;">
-  <div class="section-label">Core Competencies</div>
-  <div class="section-title">Where Strategy<br><em style="color: var(--accent-main);">Meets Execution</em></div>
+<section class="expertise-section" id="expertise">
+  <div class="section-label reveal">Core Executive Competencies</div>
+  <div class="section-title reveal">Where Strategy Meets <span class="gradient-text" style="color: var(--accent-gold); font-style: italic;">Execution</span></div>
   <div class="expertise-grid">
-    <div class="expertise-card">
+    <div class="expertise-card reveal delay-1">
       <h3>Enterprise Data Architecture</h3>
-      <p>Designing scalable BI ecosystems, cloud data warehouses, and next-generation analytics platforms. Migration roadmaps from legacy systems to AWS, GCP, and Databricks.</p>
+      <p>Designing robust, scalable data ecosystems and modern analytical infrastructures (Lakehouse, Data Mesh). Driving cloud migrations across AWS and GCP to accelerate time-to-insight and optimize total cost of ownership (TCO).</p>
     </div>
-    <div class="expertise-card">
-      <h3>Data Governance Leadership</h3>
-      <p>End-to-end governance programs: data lineage, cataloguing, metadata management, data quality standards, stewardship models, and regulatory compliance frameworks.</p>
+    <div class="expertise-card reveal delay-2">
+      <h3>Data Governance & Trust</h3>
+      <p>Establishing effective Target Operating Models (TOM) for governance. Enforcing data quality, stewardship, lineage, and cataloguing to ensure strict regulatory compliance and build single-source-of-truth enterprise assets.</p>
     </div>
-    <div class="expertise-card">
-      <h3>BI & Analytics Strategy</h3>
-      <p>Power BI, Tableau, Qlik Sense, Looker, Alteryx — translating complex data challenges into self-service analytics capabilities that drive business decisions at scale.</p>
+    <div class="expertise-card reveal delay-3">
+      <h3>BI & Advanced Analytics</h3>
+      <p>Architecting self-service analytics frameworks that democratize data. Transforming raw telemetry into actionable boardroom insights using powerhouses like Power BI, Tableau, Qlik Sense, and Alteryx.</p>
     </div>
-    <div class="expertise-card">
-      <h3>C-Suite Advisory</h3>
-      <p>Leading discovery workshops and design sessions with executive leadership. Translating complex data challenges into strategic recommendations that resonate at the boardroom level.</p>
+    <div class="expertise-card reveal delay-1">
+      <h3>Digital Transformation & Strategy</h3>
+      <p>Partnering directly with C-level stakeholders to assess organizational data maturity, define high-impact transformation roadmaps, and execute multi-year data strategies aligned with core business objectives.</p>
     </div>
-    <div class="expertise-card">
-      <h3>Digital Transformation</h3>
-      <p>Assessing data maturity, identifying high-impact use cases, and architecting multi-speed implementation frameworks that balance quick wins with long-term scalability.</p>
+    <div class="expertise-card reveal delay-2">
+      <h3>Regulatory & Risk Compliance</h3>
+      <p>Deep domain expertise in Core Banking and Financial Services. Automating complex regulatory ratio calculations and risk analytics to mitigate exposure across global jurisdictions (EMEA, APAC, NA).</p>
     </div>
-    <div class="expertise-card">
-      <h3>Regulatory & Risk Analytics</h3>
-      <p>Deep domain expertise in Banking, Financial Services: regulatory reporting, risk management, financial analytics, and data compliance across global EMEA, APAC, and NA markets.</p>
+    <div class="expertise-card reveal delay-3">
+      <h3>Leadership & Capability Building</h3>
+      <p>Recruiting, mentoring, and scaling high-performing cross-functional engineering teams. Cultivating a sustained culture of data literacy, Master Data Management (MDM) best practices, and continuous innovation.</p>
     </div>
   </div>
 </section>
 
 <section class="experience-section" id="experience">
-  <div class="timeline-grid">
-    <div>
-      <div class="section-label">Career Journey</div>
-      <div class="section-title">A Decade of<br><em style="color: var(--accent-main);">Data Leadership</em></div>
-      <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; margin-top: 1.5rem; font-weight: 300;">From systems engineering to enterprise-wide data strategy — a progression marked by increasing scope, impact, and executive influence.</p>
-    </div>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-period">Oct 2025 – Present</div>
-        <div class="timeline-role">Assistant Vice President</div>
-        <div class="timeline-company">BI & Data Governance · The Citco Group Limited, Hyderabad</div>
-        <ul class="timeline-highlights">
-          <li>Driving enterprise-wide Data & Analytics transformation across multiple business units</li>
-          <li>Designing governance frameworks: data lineage, cataloguing, metadata management, stewardship</li>
-          <li>Leading C-suite workshops to define problem statements and scope transformation engagements</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="opacity: 0.8;"></div>
-        <div class="timeline-period">Mar 2024 – Oct 2025</div>
-        <div class="timeline-role">Business Intelligence Team Lead</div>
-        <div class="timeline-company">The Citco Group Limited</div>
-        <ul class="timeline-highlights">
-          <li>Led BI strategy strengthening data transparency and regulatory reporting capabilities</li>
-          <li>Empowered 100+ business users through data literacy and self-service analytics programs</li>
-          <li>Guided enterprise data architecture decisions and platform selections</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="opacity: 0.6;"></div>
-        <div class="timeline-period">Jun 2022 – Mar 2024</div>
-        <div class="timeline-role">Banking Data Management Analyst</div>
-        <div class="timeline-company">The Citco Group Limited</div>
-        <ul class="timeline-highlights">
-          <li>Engineered self-service analytics applications in Qlik and automated complex regulatory ratio calculations</li>
-          <li>Authored comprehensive enterprise data dictionaries and mapped lineage for 50+ regulatory datasets</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="opacity: 0.4;"></div>
-        <div class="timeline-period">Apr 2021 – Jun 2022</div>
-        <div class="timeline-role">Data Analyst</div>
-        <div class="timeline-company">Dun & Bradstreet Technology, Hyderabad</div>
-        <ul class="timeline-highlights">
-          <li>Led global data integration initiatives across markets, driving enterprise data standards</li>
-          <li>Developed data mapping strategies using XML, MSSQL, MongoDB with lineage documentation</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="opacity: 0.3;"></div>
-        <div class="timeline-period">May 2019 – Apr 2021</div>
-        <div class="timeline-role">Business Analyst</div>
-        <div class="timeline-company">Deloitte, Hyderabad</div>
-        <ul class="timeline-highlights">
-          <li>Delivered 40% reduction in reporting turnaround via automation initiatives — measurable operational efficiency gain</li>
-          <li>Designed BI dashboards supporting senior leadership decision-making</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="opacity: 0.2;"></div>
-        <div class="timeline-period">Jun 2016 – May 2019</div>
-        <div class="timeline-role">System Engineer</div>
-        <div class="timeline-company">Tata Consultancy Services, Bengaluru</div>
-        <ul class="timeline-highlights">
-          <li>Automated data workflows in Alteryx; built Power BI and Tableau dashboards for CFO office</li>
-          <li>Delivered financial performance reporting for global EMEA, APAC, and NA regions</li>
+  <div style="text-align: center; max-width: 700px; margin: 0 auto 4rem;">
+    <div class="section-label reveal">Career Roadmap</div>
+    <div class="section-title reveal" style="margin-bottom: 1rem;">A Decade of <span style="color: var(--accent-gold); font-style: italic;">Leadership</span></div>
+    <p class="reveal" style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; font-weight: 300;">From systems engineering to enterprise-wide data strategy — a progression marked by increasing scope, strategic impact, and executive influence across global markets.</p>
+  </div>
+
+  <div class="roadmap-container">
+    
+    <div class="roadmap-item reveal">
+      <div class="roadmap-content">
+        <div class="roadmap-header">
+          <div>
+            <div class="roadmap-role">The Citco Group Limited</div>
+            <div class="roadmap-company">Global BI & Data Governance Division</div>
+          </div>
+          <div class="roadmap-period">Jun 2022 – Present</div>
+        </div>
+
+        <div class="progression-track">
+          <div class="progression-item">
+            <span class="progression-role">Assistant Vice President</span>
+            <span class="progression-date">Oct 2025 – Present</span>
+          </div>
+          <div class="progression-item">
+            <span class="progression-role">Business Intelligence Team Lead</span>
+            <span class="progression-date">Mar 2024 – Oct 2025</span>
+          </div>
+          <div class="progression-item">
+            <span class="progression-role">Banking Data Management Analyst</span>
+            <span class="progression-date">Jun 2022 – Mar 2024</span>
+          </div>
+        </div>
+
+        <ul class="roadmap-highlights">
+          <li><strong>Executive Leadership:</strong> Promoted rapidly from Analyst to AVP, currently championing enterprise-wide Data & Analytics transformation strategies across diverse global business units.</li>
+          <li><strong>Strategic Advisory:</strong> Directing C-suite discovery workshops to crystallize problem statements, evaluate vendor platforms, and architect scalable multi-year transformation roadmaps.</li>
+          <li><strong>Governance & Architecture:</strong> Designed and institutionalized critical governance frameworks, including comprehensive data dictionaries, lineage mapping for 50+ high-risk datasets, and active stewardship models.</li>
+          <li><strong>BI Enablement:</strong> Orchestrated modernization programs in Qlik and Power BI, automating complex regulatory ratio calculations and fostering a data-driven culture that empowered 100+ business users.</li>
         </ul>
       </div>
     </div>
+
+    <div class="roadmap-item reveal">
+      <div class="roadmap-content">
+        <div class="roadmap-header">
+          <div>
+            <div class="roadmap-role">Dun & Bradstreet Technology</div>
+            <div class="roadmap-company">Data Analyst</div>
+          </div>
+          <div class="roadmap-period">Apr 2021 – Jun 2022</div>
+        </div>
+        <ul class="roadmap-highlights">
+          <li>Spearheaded global data integration initiatives across multi-national markets, driving the adoption of strict enterprise data standards.</li>
+          <li>Developed resilient data mapping strategies and ETL pipelines using XML, MSSQL, and MongoDB with complete lineage documentation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item reveal">
+      <div class="roadmap-content">
+        <div class="roadmap-header">
+          <div>
+            <div class="roadmap-role">Deloitte</div>
+            <div class="roadmap-company">Business Analyst</div>
+          </div>
+          <div class="roadmap-period">May 2019 – Apr 2021</div>
+        </div>
+        <ul class="roadmap-highlights">
+          <li>Delivered a 40% reduction in reporting turnaround times by optimizing BI delivery pipelines and championing automation.</li>
+          <li>Designed high-level BI dashboards and KPI tracking matrices directly supporting senior leadership decision-making.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item reveal">
+      <div class="roadmap-content">
+        <div class="roadmap-header">
+          <div>
+            <div class="roadmap-role">Tata Consultancy Services</div>
+            <div class="roadmap-company">System Engineer</div>
+          </div>
+          <div class="roadmap-period">Jun 2016 – May 2019</div>
+        </div>
+        <ul class="roadmap-highlights">
+          <li>Engineered robust data workflows in Alteryx and built executive-level Power BI and Tableau dashboards for the CFO's office.</li>
+          <li>Ensured the accurate and timely delivery of financial performance reporting across global EMEA, APAC, and NA regions.</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <section class="skills-section" id="skills">
-  <div class="section-label">Technology Stack</div>
-  <div class="section-title">Tools of the<br><em style="color: var(--accent-main);">Trade</em></div>
+  <div class="section-label reveal">Technology & Strategy Stack</div>
+  <div class="section-title reveal">Tools of the <span style="color: var(--accent-gold); font-style: italic;">Executive Trade</span></div>
   <div class="skills-columns">
-    <div>
+    <div class="reveal delay-1">
       <div class="skill-group-label">BI & Visualisation</div>
       <div class="skill-tags">
         <span class="skill-tag">Power BI</span>
@@ -460,7 +587,7 @@
       <div class="skill-group-label">Cloud Platforms</div>
       <div class="skill-tags">
         <span class="skill-tag">AWS</span>
-        <span class="skill-tag">Google Cloud</span>
+        <span class="skill-tag">Google Cloud (GCP)</span>
         <span class="skill-tag">Databricks</span>
       </div>
       <div class="skill-group-label">Data Technologies</div>
@@ -468,29 +595,29 @@
         <span class="skill-tag">SQL · MSSQL</span>
         <span class="skill-tag">MongoDB</span>
         <span class="skill-tag">Python</span>
-        <span class="skill-tag">ETL/ELT</span>
+        <span class="skill-tag">ETL/ELT Pipelines</span>
         <span class="skill-tag">XML</span>
-        <span class="skill-tag">Data Warehousing</span>
+        <span class="skill-tag">Modern Data Warehousing</span>
       </div>
     </div>
-    <div>
+    <div class="reveal delay-2">
       <div class="skill-group-label">Governance & Strategy</div>
       <div class="skill-tags">
         <span class="skill-tag">Data Lineage</span>
         <span class="skill-tag">Data Cataloguing</span>
-        <span class="skill-tag">Data Dictionaries</span>
+        <span class="skill-tag">Enterprise Data Dictionaries</span>
         <span class="skill-tag">Metadata Management</span>
         <span class="skill-tag">Data Quality Management</span>
-        <span class="skill-tag">Data Lake Architecture</span>
-        <span class="skill-tag">Operating Models</span>
+        <span class="skill-tag">Data Lakehouse Architecture</span>
+        <span class="skill-tag">Target Operating Models (TOM)</span>
       </div>
       <div class="skill-group-label">Leadership & Consulting</div>
       <div class="skill-tags">
-        <span class="skill-tag">C-Level Presentations</span>
+        <span class="skill-tag">C-Level Advisory & Presentations</span>
         <span class="skill-tag">Stakeholder Management</span>
         <span class="skill-tag">Capability Maturity Assessment</span>
         <span class="skill-tag">Agile / Scrum</span>
-        <span class="skill-tag">Use Case Development</span>
+        <span class="skill-tag">Strategic Roadmapping</span>
       </div>
       <div class="skill-group-label">Education & Certifications</div>
       <div class="skill-tags">
@@ -504,27 +631,29 @@
 
 <section class="contact-section" id="contact">
   <div class="contact-grid">
-    <div>
+    <div class="reveal">
       <div class="section-label">Let's Connect</div>
-      <div class="contact-tagline">"Turning data complexity into competitive clarity."</div>
-      <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; font-weight: 300;">Open to CXO-level conversations in Data Management, Data Governance, and enterprise analytics strategy. Based in Hyderabad — available globally for leadership roles and advisory engagements.</p>
+      <div class="contact-tagline">"Transforming enterprise data from a cost center into a strategic asset."</div>
+      <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; font-weight: 300;">Open to CXO-level conversations regarding Data Management, Data Governance, and enterprise analytics strategy. Based in Hyderabad — available globally for senior leadership roles and advisory engagements.</p>
     </div>
-    <div>
-      <div class="contact-info-item">
-        <div class="contact-info-label">Phone</div>
-        <div class="contact-info-value">+91-9032406431</div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-info-label">Email</div>
-        <div class="contact-info-value"><a href="mailto:msaraschandra@gmail.com">msaraschandra@gmail.com</a></div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-info-label">LinkedIn</div>
-        <div class="contact-info-value"><a href="https://www.linkedin.com/in/saras3233/" target="_blank">linkedin.com/in/saras3233</a></div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-info-label">Location</div>
-        <div class="contact-info-value">Hyderabad, Telangana, India</div>
+    <div class="reveal delay-2">
+      <div class="contact-info-wrapper">
+        <div class="contact-info-item">
+          <div class="contact-info-label">Phone</div>
+          <div class="contact-info-value">+91-9032406431</div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">Email</div>
+          <div class="contact-info-value"><a href="mailto:msaraschandra@gmail.com">msaraschandra@gmail.com</a></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">LinkedIn</div>
+          <div class="contact-info-value"><a href="https://www.linkedin.com/in/saras3233/" target="_blank">linkedin.com/in/saras3233</a></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">Location</div>
+          <div class="contact-info-value">Hyderabad, Telangana, India</div>
+        </div>
       </div>
     </div>
   </div>
@@ -534,6 +663,38 @@
   <div class="footer-name">Saraschandra Mavallapalli</div>
   <div class="footer-note">Data & Analytics Executive · AVP, Citco Group</div>
 </footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Scroll reveal logic
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach(el => observer.observe(el));
+
+    // Navbar shrink/blur on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
